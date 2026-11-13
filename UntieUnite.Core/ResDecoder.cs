@@ -93,9 +93,9 @@ namespace UntieUnite.Core
             /* On default failure, return null. */
             decrypted = null;
             /* Get the archive's padding. */
-            int flags = LEUint32(archive, 4);
-            int size = LEUint32(archive, 8);
-            int hashCode = LEUint32(archive, 12);
+            uint flags = LEUint32(archive, 4);
+            uint size = LEUint32(archive, 8);
+            uint hashCode = LEUint32(archive, 12);
 			byte[] data = archive[16..];
 
 			if ((flags & 256) != 0) { // AES
