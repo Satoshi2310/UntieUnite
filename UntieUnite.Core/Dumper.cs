@@ -403,17 +403,29 @@ namespace UntieUnite.Core
 
 
             var sourceDir = new DirectoryInfo(path);
-            foreach (var fi in sourceDir.GetFiles())
-            {
-                var archive = File.ReadAllBytes(fi.FullName);
-                if (SoundCrypto.IsSoundArchive(archive))
-                    File.WriteAllBytes(Path.Combine(dirDumpSound, fi.Name), SoundCrypto.Decrypt(archive));
 
-                if (fi.Name == "oe7e311ed.bin")
-                {
-                    File.WriteAllBytes(Path.Combine(dirDumpSound, fi.Name), SoundCrypto.DecryptSwitch("snd_Init.bnk", archive));
-                }
-            }
+Console.WriteLine($"Sound source: {path}");
+Console.WriteLine($"Sound file count: {sourceDir.GetFiles().Length}");
+
+foreach (var fi in sourceDir.GetFiles())
+{
+    var archive = File.ReadAllBytes(fi.FullName);
+    var valid = SoundCrypto.IsSoundArchive(archive);
+
+    Console.WriteLine(
+        $"{fi.Name} | {archive.Length} bytes | IsSoundArchive={valid} | {BitConverter.ToString(archive.Take(16).ToArray())}"
+    );
+
+    if (valid)
+    {
+        var decrypted = SoundCrypto.Decrypt(archive);
+        File.WriteAllBytes(
+            Path.Combine(dirDumpSound, fi.Name),
+            decrypted
+        );
+        Console.WriteLine($"Decrypted: {fi.Name}");
+    }
+}
         }
     }
 }
