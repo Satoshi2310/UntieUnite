@@ -396,8 +396,10 @@ namespace UntieUnite.Core
                 path = Path.Combine(inDir, "Sound", "Android");
 
             if (!Directory.Exists(path))
-                System.Console.WriteLine("No Sound directory found");
-                return;
+        {
+            System.Console.WriteLine("No Sound directory found");
+            return;
+        }
 
 
             var sourceDir = new DirectoryInfo(path);
