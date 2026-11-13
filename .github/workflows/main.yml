@@ -1,0 +1,45 @@
+
+name: Build UntieUnite
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 3.1.426
+
+      - name: Build Solution
+        run: dotnet build UntieUnite.sln --configuration Release
+
+      - name: Publish Windows x64
+        run: >
+          dotnet publish UntieUnite.ConsoleApp/UntieUnite.ConsoleApp.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          --output ./publish
+
+      - name: Package
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./UntieUnite-win-x64.zip
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UntieUnite-win-x64
+          path: UntieUnite-win-x64.zip
+          retention-days: 30
