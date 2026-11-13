@@ -151,7 +151,7 @@ namespace UntieUnite.Core
             /* Get the archive's padding. */
             var padding = archive[3];
 			if (padding == 0xEF)
-				return TryDecryptBytesNew(archive, decrypted);
+				return TryDecryptBytesNew(archive, out decrypted);
             if (padding > 0x10)
                 return false;
 
