@@ -17,7 +17,7 @@ namespace UntieUnite
 
             var inDir = args[0];
             var outDir = args[1];
-            Dumper.ExtractBins(inDir, outDir);
+            Dumper.ExtractBins(inDir, outDir, extraData: false);
         }
     }
 }
